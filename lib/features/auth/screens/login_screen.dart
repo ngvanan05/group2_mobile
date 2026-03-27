@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:group2_mobile/features/auth/screens/register_screen.dart';
+// Andrew nhớ kiểm tra lại đường dẫn import này nhé
+import 'register_screen.dart';
+import 'setting_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -13,6 +15,9 @@ class _LoginScreenState extends State<LoginScreen> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
+  final Color primaryColor = const Color(0xFF192580);
+  final Color backgroundColor = const Color(0xFFF6F6F8);
+
   bool isObscure = true;
   bool isLoading = false;
 
@@ -25,6 +30,11 @@ class _LoginScreenState extends State<LoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text("Đăng nhập thành công")),
     );
+    if (!mounted) return;
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+    );
   }
 
   @override
@@ -36,54 +46,51 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // Sử dụng LayoutBuilder để xác định kích thước màn hình
     return Scaffold(
-      backgroundColor: Colors.grey.shade300,
+      backgroundColor: backgroundColor,
       body: LayoutBuilder(
         builder: (context, constraints) {
-          // Nếu màn hình rộng hơn 800px, chúng ta coi là Desktop/Tablet ngang
-          bool isWideScreen = constraints.maxWidth > 800;
+          bool isWideScreen = constraints.maxWidth > 850;
 
           return Center(
             child: SingleChildScrollView(
-              padding: const EdgeInsets.all(20),
+              padding: const EdgeInsets.all(24),
               child: AnimatedContainer(
                 duration: const Duration(milliseconds: 500),
                 constraints: BoxConstraints(
-                  // Nếu màn hình rộng thì container to hơn, nếu hẹp thì tối đa 430px
-                  maxWidth: isWideScreen ? 900 : 430,
+                  maxWidth: isWideScreen ? 900 : 450,
                 ),
-                padding: const EdgeInsets.all(30),
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(24),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withOpacity(0.05),
-                      blurRadius: 20,
-                      offset: const Offset(0, 10),
+                      color: Colors.black.withOpacity(0.04),
+                      blurRadius: 24,
+                      offset: const Offset(0, 12),
                     )
                   ],
                 ),
                 child: isWideScreen 
-                  ? Row( // Chế độ màn hình ngang
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        Expanded(child: _buildLogoSection()),
-                        const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 40),
-                          child: VerticalDivider(thickness: 1),
-                        ),
-                        Expanded(child: _buildFormSection()),
-                      ],
+                  ? IntrinsicHeight( // Để Divider cao bằng nội dung
+                      child: Row(
+                        children: [
+                          Expanded(child: _buildLogoSection()),
+                          VerticalDivider(width: 1, thickness: 1, color: Colors.blueGrey.shade50),
+                          Expanded(child: _buildFormSection()),
+                        ],
+                      ),
                     )
-                  : Column( // Chế độ màn hình dọc (Mobile)
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        _buildLogoSection(),
-                        const SizedBox(height: 40),
-                        _buildFormSection(),
-                      ],
+                  : Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 40),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          _buildLogoSection(),
+                          const SizedBox(height: 20),
+                          _buildFormSection(),
+                        ],
+                      ),
                     ),
               ),
             ),
@@ -93,147 +100,132 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-  // Tách riêng phần Logo để tái sử dụng
   Widget _buildLogoSection() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Container(
-          padding: const EdgeInsets.all(20),
-          decoration: BoxDecoration(
-            color: const Color(0xFF192580),
-            borderRadius: BorderRadius.circular(20),
+    return Container(
+      padding: const EdgeInsets.all(40),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            "FOURpoint",
+            style: TextStyle(
+              fontSize: 36,
+              fontWeight: FontWeight.bold,
+              color: primaryColor,
+              letterSpacing: -1.0,
+            ),
           ),
-          child: const Icon(Icons.apartment, color: Colors.white, size: 60),
-        ),
-        const SizedBox(height: 20),
-        const Text(
-          "FP FourPoint Hotel",
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: 28,
-            fontWeight: FontWeight.bold,
-            color: Color(0xFF192580),
+          const SizedBox(height: 12),
+          Text(
+            "Hệ thống quản lý\nkhách sạn thông minh",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Colors.blueGrey.shade400,
+              fontSize: 15,
+              height: 1.5,
+            ),
           ),
-        ),
-        const SizedBox(height: 10),
-        const Text(
-          "Hệ thống quản lý khách sạn thông minh",
-          textAlign: TextAlign.center,
-          style: TextStyle(color: Colors.grey),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
-  // Tách riêng phần Form đăng nhập
   Widget _buildFormSection() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          "Đăng nhập",
-          style: TextStyle(fontSize: 26, fontWeight: FontWeight.bold),
-        ),
-        const SizedBox(height: 25),
-        Form(
-          key: _formKey,
-          child: Column(
-            children: [
-              _buildInput(
-                controller: emailController,
-                label: "Email",
-                hint: "Email của bạn",
-                icon: Icons.email_outlined,
-                validator: (value) {
-                  if (value == null || value.isEmpty) return "Vui lòng nhập email";
-                  return null;
-                },
-              ),
-              const SizedBox(height: 16),
-              _buildInput(
-                controller: passwordController,
-                label: "Mật khẩu",
-                hint: "Mật khẩu",
-                icon: Icons.lock_outline,
-                isPassword: true,
-                validator: (value) {
-                  if (value == null || value.isEmpty) return "Vui lòng nhập mật khẩu";
-                  return null;
-                },
-              ),
-            ],
+    return Padding(
+      padding: const EdgeInsets.all(40),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            "Đăng nhập",
+            style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Color(0xFF0F172A)),
           ),
-        ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: TextButton(
-            onPressed: () {},
-            child: const Text("Quên mật khẩu?", style: TextStyle(color: Colors.grey)),
-          ),
-        ),
-        const SizedBox(height: 10),
-        SizedBox(
-          width: double.infinity,
-          height: 55,
-          child: ElevatedButton(
-            onPressed: isLoading ? null : handleLogin,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF192580),
-              foregroundColor: Colors.white,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-              elevation: 0,
-            ),
-            child: isLoading
-                ? const SizedBox(
-                    height: 20,
-                    width: 20,
-                    child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2),
-                  )
-                : const Text("Đăng nhập", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-          ),
-        ),
-        const SizedBox(height: 25),
-        const Row(
-          children: [
-            Expanded(child: Divider()),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 10),
-              child: Text("Hoặc", style: TextStyle(fontSize: 12, color: Colors.grey)),
-            ),
-            Expanded(child: Divider()),
-          ],
-        ),
-        const SizedBox(height: 20),
-        Row(
-          children: [
-            Expanded(child: _socialButton("Google", Icons.g_mobiledata)),
-            const SizedBox(width: 12),
-            Expanded(child: _socialButton("Facebook", Icons.facebook)),
-          ],
-        ),
-        const SizedBox(height: 25),
-        Center(
-          child: Wrap( // Wrap để tránh tràn chữ trên màn hình cực nhỏ
-            alignment: WrapAlignment.center,
-            children: [
-              const Text("Chưa có tài khoản? "),
-              GestureDetector(
-                onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const RegisterScreen()),
-                    );
-                  },
-                child: const Text(
-                  "Đăng ký ngay",
-                  style: TextStyle(color: Color(0xFF192580), fontWeight: FontWeight.bold),
+          const SizedBox(height: 32),
+          Form(
+            key: _formKey,
+            child: Column(
+              children: [
+                _buildInput(
+                  controller: emailController,
+                  label: "Email",
+                  hint: "alex.thompson@fourpoint.com",
+                  validator: (value) => (value == null || value.isEmpty) ? "Vui lòng nhập email" : null,
                 ),
-              )
+                _buildInput(
+                  controller: passwordController,
+                  label: "Mật khẩu",
+                  hint: "••••••",
+                  isPassword: true,
+                  validator: (value) => (value == null || value.isEmpty) ? "Vui lòng nhập mật khẩu" : null,
+                ),
+              ],
+            ),
+          ),
+          Align(
+            alignment: Alignment.centerRight,
+            child: TextButton(
+              onPressed: () {},
+              child: Text("Quên mật khẩu?", style: TextStyle(color: primaryColor.withOpacity(0.6))),
+            ),
+          ),
+          const SizedBox(height: 12),
+          SizedBox(
+            width: double.infinity,
+            height: 56,
+            child: ElevatedButton(
+              onPressed: isLoading ? null : handleLogin,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: primaryColor,
+                foregroundColor: Colors.white,
+                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                elevation: 0,
+              ),
+              child: isLoading
+                  ? const SizedBox(width: 24, height: 24, child: CircularProgressIndicator(color: Colors.white, strokeWidth: 2))
+                  : const Text("ĐĂNG NHẬP", style: TextStyle(fontWeight: FontWeight.bold, letterSpacing: 1.1)),
+            ),
+          ),
+          const SizedBox(height: 32),
+          Row(
+            children: [
+              const Expanded(child: Divider()),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Text("HOẶC", style: TextStyle(fontSize: 11, color: Colors.blueGrey.shade300, fontWeight: FontWeight.bold)),
+              ),
+              const Expanded(child: Divider()),
             ],
           ),
-        ),
-      ],
+          const SizedBox(height: 24),
+          Row(
+            children: [
+              Expanded(child: _socialButton("Google", Icons.g_mobiledata)),
+              const SizedBox(width: 12),
+              Expanded(child: _socialButton("Facebook", Icons.facebook)),
+            ],
+          ),
+          const SizedBox(height: 32),
+          Center(
+            child: GestureDetector(
+              onTap: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const RegisterScreen()));
+              },
+              child: Text.rich(
+                TextSpan(
+                  text: "Chưa có tài khoản? ",
+                  style: const TextStyle(color: Colors.blueGrey),
+                  children: [
+                    TextSpan(
+                      text: "Đăng ký ngay",
+                      style: TextStyle(color: primaryColor, fontWeight: FontWeight.bold),
+                    )
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 
@@ -241,56 +233,62 @@ class _LoginScreenState extends State<LoginScreen> {
     required TextEditingController controller,
     required String label,
     required String hint,
-    required IconData icon,
     String? Function(String?)? validator,
     bool isPassword = false,
   }) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Text(label, style: const TextStyle(fontWeight: FontWeight.w600)),
-        const SizedBox(height: 6),
-        TextFormField(
-          controller: controller,
-          obscureText: isPassword ? isObscure : false,
-          validator: validator,
-          decoration: InputDecoration(
-            hintText: hint,
-            prefixIcon: Icon(icon),
-            suffixIcon: isPassword
-                ? IconButton(
-                    icon: Icon(isObscure ? Icons.visibility_off : Icons.visibility),
-                    onPressed: () => setState(() => isObscure = !isObscure),
-                  )
-                : null,
-            filled: true,
-            fillColor: Colors.grey.shade100,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(16),
-              borderSide: BorderSide.none,
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            label.toUpperCase(),
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 11, color: Colors.blueGrey, letterSpacing: 1.2),
+          ),
+          const SizedBox(height: 8),
+          TextFormField(
+            controller: controller,
+            obscureText: isPassword ? isObscure : false,
+            validator: validator,
+            decoration: InputDecoration(
+              hintText: hint,
+              hintStyle: TextStyle(color: Colors.blueGrey.shade200, fontSize: 14),
+              suffixIcon: isPassword
+                  ? IconButton(
+                      icon: Icon(isObscure ? Icons.visibility_off_outlined : Icons.visibility_outlined, size: 20),
+                      onPressed: () => setState(() => isObscure = !isObscure),
+                    )
+                  : null,
+              filled: true,
+              fillColor: Colors.blueGrey.shade50.withOpacity(0.5),
+              contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(12),
+                borderSide: BorderSide.none,
+              ),
             ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
   Widget _socialButton(String text, IconData icon) {
-    return InkWell( // Dùng InkWell để có hiệu ứng bấm
+    return InkWell(
       onTap: () {},
       borderRadius: BorderRadius.circular(12),
       child: Container(
         height: 50,
         decoration: BoxDecoration(
-          border: Border.all(color: Colors.grey.shade300),
+          border: Border.all(color: Colors.blueGrey.shade100),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon),
-            const SizedBox(width: 6),
-            Flexible(child: Text(text, overflow: TextOverflow.ellipsis)),
+            Icon(icon, color: primaryColor),
+            const SizedBox(width: 8),
+            Text(text, style: TextStyle(fontWeight: FontWeight.bold, color: primaryColor)),
           ],
         ),
       ),
