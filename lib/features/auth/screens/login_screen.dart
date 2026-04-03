@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:group2_mobile/features/auth/screens/register_screen.dart';
+import 'package:group2_mobile/features/chat/screens/chat_list_screen.dart';
+import 'package:group2_mobile/features/chat/screens/chat_list_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -22,8 +24,9 @@ class _LoginScreenState extends State<LoginScreen> {
     await Future.delayed(const Duration(seconds: 2));
     if (!mounted) return;
     setState(() => isLoading = false);
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text("Đăng nhập thành công")),
+    Navigator.of(context).pushAndRemoveUntil(
+      MaterialPageRoute(builder: (_) => const ChatListScreen()),
+      (route) => false,
     );
   }
 
