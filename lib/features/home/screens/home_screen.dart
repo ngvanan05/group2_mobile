@@ -13,7 +13,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  int _currentIndex = 0;
   bool _isSearching = false;
   String _searchQuery = '';
   final TextEditingController _searchController = TextEditingController();
@@ -227,7 +226,6 @@ class _HomeScreenState extends State<HomeScreen> {
       backgroundColor: const Color(0xFFF0F2F5),
       appBar: _buildAppBar(),
       body: _buildBody(),
-      bottomNavigationBar: _buildBottomNav(),
     );
   }
 
@@ -356,49 +354,4 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildBottomNav() {
-    return BottomNavigationBar(
-      currentIndex: _currentIndex,
-      onTap: (index) => setState(() => _currentIndex = index),
-      type: BottomNavigationBarType.fixed,
-      selectedItemColor: const Color(0xFF1565C0),
-      unselectedItemColor: Colors.grey,
-      backgroundColor: Colors.white,
-      elevation: 8,
-      selectedFontSize: 12,
-      unselectedFontSize: 12,
-      items: [
-        const BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Trang chu'),
-        BottomNavigationBarItem(
-          icon: Stack(
-            clipBehavior: Clip.none,
-            children: [
-              const Icon(Icons.chat_bubble_outline),
-              Positioned(
-                top: -4,
-                right: -6,
-                child: Container(
-                  width: 16,
-                  height: 16,
-                  decoration: const BoxDecoration(color: Colors.red, shape: BoxShape.circle),
-                  alignment: Alignment.center,
-                  child: const Text('2', style: TextStyle(color: Colors.white, fontSize: 10)),
-                ),
-              ),
-            ],
-          ),
-          label: 'Tin nhan',
-        ),
-        const BottomNavigationBarItem(icon: Icon(Icons.calendar_today_outlined), label: 'Lich lam'),
-        BottomNavigationBarItem(
-          icon: CircleAvatar(
-            radius: 12,
-            backgroundColor: const Color(0xFF1565C0),
-            child: const Text('PT', style: TextStyle(color: Colors.white, fontSize: 9)),
-          ),
-          label: 'Tai khoan',
-        ),
-      ],
-    );
-  }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
-// Andrew nhớ kiểm tra lại đường dẫn import này nhé
 import 'register_screen.dart';
-import 'setting_screen.dart';
+import '../../../core/widgets/main_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -33,7 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+      MaterialPageRoute(builder: (context) => const MainScreen()),
     );
   }
 
@@ -106,22 +105,44 @@ class _LoginScreenState extends State<LoginScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "FOURpoint",
-            style: TextStyle(
-              fontSize: 36,
-              fontWeight: FontWeight.bold,
-              color: primaryColor,
-              letterSpacing: -1.0,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                alignment: Alignment.center,
+                child: const Text(
+                  'FP',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                "FourPoint Hotel",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 12),
           Text(
-            "Hệ thống quản lý\nkhách sạn thông minh",
+            "Hệ thống quản lý khách sạn thông minh",
             textAlign: TextAlign.center,
             style: TextStyle(
               color: Colors.blueGrey.shade400,
-              fontSize: 15,
+              fontSize: 13,
               height: 1.5,
             ),
           ),

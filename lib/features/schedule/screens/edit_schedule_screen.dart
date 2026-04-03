@@ -254,7 +254,6 @@ class _EditScheduleScreenState extends State<EditScheduleScreen> {
           ],
         ),
       ),
-      bottomNavigationBar: _buildBottomNav(),
     );
   }
 

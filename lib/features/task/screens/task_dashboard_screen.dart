@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:group2_mobile/features/auth/screens/login_screen.dart';
 import 'package:group2_mobile/features/task/screens/in_progress_screen.dart';
 import 'package:group2_mobile/features/task/screens/completed_screen.dart';
 import 'package:group2_mobile/features/task/screens/urgent_screen.dart';
@@ -199,55 +198,7 @@ class TaskDashboardScreen extends StatelessWidget {
         backgroundColor: Colors.blue,
         child: const Icon(Icons.add, size: 32),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.blue,
-        unselectedItemColor: Colors.grey,
-        currentIndex: 0,
-        onTap: (index) {
-          if (index == 3) {
-            // Tài khoản - Navigate to Login
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(builder: (context) => const LoginScreen()),
-            );
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            label: 'Trang chủ',
-          ),
-          BottomNavigationBarItem(
-            icon: Stack(
-              children: [
-                Icon(Icons.message_outlined),
-                Positioned(
-                  right: 0,
-                  top: 0,
-                  child: CircleAvatar(
-                    radius: 6,
-                    backgroundColor: Colors.red,
-                    child: Text(
-                      '3',
-                      style: TextStyle(fontSize: 8, color: Colors.white),
-                    ),
-                  ),
-                ),
-              ],
-            ),
-            label: 'Tin nhắn',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.calendar_today_outlined),
-            label: 'Lịch làm',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            label: 'Tài khoản',
-          ),
-        ],
-      ),
+      bottomNavigationBar: null,
     );
   }
 

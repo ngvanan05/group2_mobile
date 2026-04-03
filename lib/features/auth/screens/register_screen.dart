@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'setting_screen.dart';
+import '../../../core/widgets/main_screen.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -35,7 +35,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     if (!mounted) return;
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => const SettingsScreen()),
+      MaterialPageRoute(builder: (context) => const MainScreen()),
     );
   }
 
@@ -98,22 +98,44 @@ class _RegisterScreenState extends State<RegisterScreen> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            "FOURpoint",
-            style: TextStyle(
-              fontSize: 40,
-              fontWeight: FontWeight.bold,
-              color: primaryColor,
-              letterSpacing: -1.0,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                width: 44,
+                height: 44,
+                decoration: BoxDecoration(
+                  color: primaryColor,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                alignment: Alignment.center,
+                child: const Text(
+                  'FP',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              Text(
+                "FourPoint Hotel",
+                style: TextStyle(
+                  fontSize: 24,
+                  fontWeight: FontWeight.bold,
+                  color: primaryColor,
+                ),
+              ),
+            ],
           ),
           const SizedBox(height: 24),
           Text(
             "Gia nhập cộng đồng quản lý khách sạn chuyên nghiệp.\nĐăng ký để bắt đầu ngay.",
             textAlign: TextAlign.center,
             style: TextStyle(
-              fontSize: 16, 
-              color: Colors.blueGrey.shade400, 
+              fontSize: 15,
+              color: Colors.blueGrey.shade400,
               height: 1.6,
               fontWeight: FontWeight.w400,
             ),

@@ -96,7 +96,6 @@ class _ScheduleScreenState extends State<ScheduleScreen> {
           ),
         ],
       ),
-      bottomNavigationBar: _buildBottomNav(),
     );
   }
 

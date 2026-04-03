@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login_screen.dart';
 import 'user_management.dart';
 
 class SettingsScreen extends StatelessWidget {
@@ -16,12 +17,9 @@ class SettingsScreen extends StatelessWidget {
         backgroundColor: Colors.white,
         elevation: 0,
         scrolledUnderElevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: primaryColor),
-          onPressed: () => Navigator.pop(context),
-        ),
+        automaticallyImplyLeading: false,
         title: const Text(
-          "Cài đặt",
+          "Tài khoản",
           style: TextStyle(
             color: Color(0xFF0F172A),
             fontWeight: FontWeight.bold,
@@ -56,23 +54,23 @@ class SettingsScreen extends StatelessWidget {
                   onTap: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(builder: (context) => const DirectoryScreen()),
+                      MaterialPageRoute(builder: (_) => const DirectoryScreen()),
                     );
                   },
                 ),
-                _buildSettingItem(
-                  icon: Icons.verified_user_outlined,
-                  title: "Quản lý công việc",
-                  onTap: () {},
-                ),
                 const SizedBox(height: 24),
-                _buildLogoutItem(onTap: () {}),
+                _buildLogoutItem(onTap: () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    MaterialPageRoute(builder: (_) => const LoginScreen()),
+                    (route) => false,
+                  );
+                }),
               ],
             ),
           ),
         ],
       ),
-      bottomNavigationBar: _buildBottomNav(),
     );
   }
 
@@ -84,7 +82,7 @@ class SettingsScreen extends StatelessWidget {
         children: [
           const CircleAvatar(
             radius: 35,
-            backgroundImage: NetworkImage("https://i.pravatar.cc/150?u=7"),
+            backgroundImage: NetworkImage("https://img.docbao.vn/images/uploads/2021/02/16/photo-1-1613475477506499108131.jpg"),
           ),
           const SizedBox(width: 16),
           Column(
@@ -167,25 +165,6 @@ class SettingsScreen extends StatelessWidget {
           color: Colors.red,
         ),
       ),
-    );
-  }
-
-  // Thanh điều hướng BottomNav đồng bộ với DirectoryScreen
-  Widget _buildBottomNav() {
-    return BottomNavigationBar(
-      currentIndex: 3, // Tab "Tài khoản" đang được chọn
-      type: BottomNavigationBarType.fixed,
-      backgroundColor: Colors.white,
-      selectedItemColor: primaryColor,
-      unselectedItemColor: Colors.blueGrey[300],
-      selectedLabelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-      unselectedLabelStyle: const TextStyle(fontSize: 10, fontWeight: FontWeight.bold),
-      items: const [
-        BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: "Trang chủ"),
-        BottomNavigationBarItem(icon: Icon(Icons.chat_bubble_outline), label: "Tin nhắn"),
-        BottomNavigationBarItem(icon: Icon(Icons.calendar_month_outlined), label: "Lịch làm"),
-        BottomNavigationBarItem(icon: Icon(Icons.person), label: "Tài khoản"),
-      ],
     );
   }
 }

@@ -68,7 +68,7 @@ class _DirectoryScreenState extends State<DirectoryScreen> {
                   fontSize: 24,
                   fontWeight: FontWeight.bold,
                   color: primaryColor,
-                  letterSpacing: -0.5,
+                  letterSpacing: 0,
                 ),
               ),
               Row(
