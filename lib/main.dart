@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:group2_mobile/features/auth/screens/login_screen.dart';
+import 'package:group2_mobile/features/home/screens/home_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,11 +11,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'FourPoint Hotel',
+      debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF1565C0)),
+        fontFamily: 'Roboto',
       ),
-      home: const LoginScreen(),
+      home: const HomeScreen(),
     );
   }
 }
